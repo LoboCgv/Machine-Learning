@@ -1,0 +1,63 @@
+{% load staticfiles %}
+<html>
+  <head>
+    <title></title>
+    <meta content="">
+    <style></style>
+  </head>
+  <body>
+    <div id="canvas1">
+      
+    </div>
+    <div id="imgCapture">Capture will be here</div>
+    <button id="btnStop">Stop</button>
+    <button id="btnPlay">Play</button>
+    <button id="btnCapture">Capture</button>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="{%static 'video2image.js'%}"></script>
+  <script>
+    $(function () {
+  
+        var isSupported = $("#canvas1").video2image('isSupported');
+
+        if(isSupported) {
+	    
+            $("#canvas1").video2image({
+                width : 320,
+                height : 240,
+                autoplay : true,
+                onsuccess : function() {
+                    console.log('success');
+                },
+                onerror: function() {
+                    console.log('error');
+                }
+            });
+
+        } else {
+            var canvas = document.getElementById("canvas1");
+            var context = canvas.getContext("2d");
+            context.font = "bold 16px Arial";
+            context.fillText("Capture not supported", (canvas.width / 2) - 90, (canvas.height / 2) + 8);
+            console.log('video2image is not supported by your browser');
+        }
+
+        $("#btnStop").on("click", function (event) {
+            alert();
+            //$("#canvas1").video2image('stop');
+        });
+
+        $("#btnPlay").on("click", function (event) {
+        alert();
+            $("#canvas1").video2image('start');
+        });
+
+        $("#btnCapture").on("click", function (event) {
+            var dataurl = $("#canvas1").video2image('capture');
+            $("#imgCapture").html('<img src="' + dataurl + '"/>');
+        });
+
+    });
+</script>
+  </body>
+</html>
